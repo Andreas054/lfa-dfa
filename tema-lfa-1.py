@@ -18,16 +18,18 @@ def citireFisierCuvinte(numeFisier):
          f = f.read().split('\n')
          while f[-1] == '':
             f = f[:-1]
+         f = [x.strip() for x in f]
     return f
 
-stariFinale, dictDFA = citireFisierDFA("tema-lfa-1-DFA-ex1.txt")
-cuvinte = citireFisierCuvinte("tema-lfa-1-cuvinte-ex1.txt")
+stariFinale, dictDFA = citireFisierDFA("tema-lfa-1-DFA-ex5.txt")
+cuvinte = citireFisierCuvinte("tema-lfa-1-cuvinte-ex5.txt")
 
 dictDrumuri = {}
 
 for cuvant in cuvinte:
-    drumAles = []
+    print()
     stareCurenta = sorted(dictDFA.keys())[0]
+    drumAles = [stareCurenta]
     for litera in cuvant:
         found = False
         for tuplu in dictDFA[stareCurenta]:
@@ -37,8 +39,11 @@ for cuvant in cuvinte:
                 drumAles.append(stareCurenta)
                 break
         if found == False:
+            print("Cuvantul '{}' nu apartine alfabetului".format(cuvant))
             break
     else:
         if stareCurenta in stariFinale:
             print("Pentru cuvantul '{}' drumul este ".format(cuvant))
             print(" ".join(drumAles))
+        else:
+            print("Pentru cuvantul '{}' nu am ajuns in stare finala".format(cuvant))
