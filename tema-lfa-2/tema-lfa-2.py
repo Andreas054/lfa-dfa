@@ -27,16 +27,20 @@ def afisare(drumCurent):
 
 def back(stare, k):
     for litera in alfabet:
-        for tupluDrumuri in dictDFA[stare]:
-            if tupluDrumuri[0] == litera and k < maxx + 1:
-                drumCurent[k] = tupluDrumuri
-                if tupluDrumuri[1] in stariFinale and k == maxx:
-                    afisare(drumCurent)
-                else:
-                    back(tupluDrumuri[1], k + 1)
+        if stare in dictDFA.keys():
+            for tupluDrumuri in dictDFA[stare]:
+                if tupluDrumuri[0] == litera and k < maxx + 1:
+                    drumCurent[k] = tupluDrumuri
+                    if tupluDrumuri[1] in stariFinale and k == maxx:
+                        afisare(drumCurent)
+                    else:
+                        back(tupluDrumuri[1], k + 1)
 
-#maxx, stariFinale, alfabet, dictDFA = citireFisierDFA("tema-lfa-2-DFA-ex2.txt")
-maxx, stariFinale, alfabet, dictDFA = citireFisierDFA("tema-lfa-2-DFA-ex1.txt")
+maxx, stariFinale, alfabet, dictDFA = citireFisierDFA("tema-lfa-2-DFA-ex5.txt")
 
-drumCurent = [('', 'q0')] + [0] * maxx
-back(drumCurent[0][1], 1)
+stareInitiala = sorted(dictDFA.keys())[0]
+drumCurent = [('', stareInitiala)] + [0] * maxx
+if maxx > 0:
+    back(drumCurent[0][1], 1)
+else:
+    afisare(drumCurent)
