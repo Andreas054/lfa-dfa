@@ -14,33 +14,34 @@ def citireFisierDFA(numeFisier):
                 dictDFA[linie[0]] = [(linie[1], linie[2])]
             else:
                 dictDFA[linie[0]].append((linie[1], linie[2]))
-    return maxx, stariFinale, set(alfabet), dictDFA
+    return alfabet.count('L'), maxx, stariFinale, set(alfabet), dictDFA
 
-def afisare(drumCurent):
-    print("cuvant = ", end = "")
-    for tuplu in drumCurent:
-        print(tuplu[0], end = "")
-    print("\t;\tdrum = ", end = "")
-    for tuplu in drumCurent:
-        print(tuplu[1], end=" ")
-    print()
-
-def back(stare, k):
+def back(stare, k, lmaxx):
+    global cuvantCurent, listaCuvinte
     for litera in alfabet:
         if stare in dictDFA.keys():
             for tupluDrumuri in dictDFA[stare]:
-                if tupluDrumuri[0] == litera and k < maxx + 1:
-                    drumCurent[k] = tupluDrumuri
-                    if tupluDrumuri[1] in stariFinale and k == maxx:
-                        afisare(drumCurent)
+                if tupluDrumuri[0] == litera and k < maxx + 1 and lmaxx < (round(1.5 * maxxN) + nr_aparitii_L):
+                    if litera == 'L':
+                        back(tupluDrumuri[1], k, lmaxx + 1)
                     else:
-                        back(tupluDrumuri[1], k + 1)
+                        cuvantCurent[k] = tupluDrumuri[0]
+                        if tupluDrumuri[1] in stariFinale and k == maxx:
+                            listaCuvinte.append(''.join(cuvantCurent))
+                        else:
+                            back(tupluDrumuri[1], k + 1, lmaxx)
 
-maxx, stariFinale, alfabet, dictDFA = citireFisierDFA("tema-lfa-2-DFA-ex5.txt")
-
+nr_aparitii_L, maxxN, stariFinale, alfabet, dictDFA = citireFisierDFA("tema-lfa-2-DFA-ex6.txt")
 stareInitiala = sorted(dictDFA.keys())[0]
-drumCurent = [('', stareInitiala)] + [0] * maxx
-if maxx > 0:
-    back(drumCurent[0][1], 1)
-else:
-    afisare(drumCurent)
+listaCuvinte = []
+
+if stareInitiala in stariFinale:
+    listaCuvinte.append("cuvant vid")
+
+for maxx in range(maxxN + 1):
+    cuvantCurent = [''] * (maxx + 1)
+    back(stareInitiala, 1, 1)
+
+listaCuvinte = sorted(set(listaCuvinte))
+print('\n'.join(listaCuvinte))
+print("nr =", len(listaCuvinte))
