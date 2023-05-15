@@ -53,7 +53,7 @@ def checkRecursiv(dict, cuvant, simbolCurent):
 
 cuvant = input("Cuvant: ")
 while cuvant != "0":
-    dict = citireFisier("tema-lfa-3-gramatica-ex1.txt")
+    dict = citireFisier("tema-lfa-3-gramatica-ex3.txt")
     print(check(dict, cuvant, "S"), end = "\t")
     print(cuvant)
     cuvant = input("Cuvant: ")
